@@ -103,26 +103,26 @@ class CycleList : Serializable {
             var tail: Node? = head!!.prev
             tail!!.next = null
             head!!.prev = null
-            head = mergeSort(head, comparator)
+            head = mergeSort(head)
             tail = getNode(length - 1)
             tail!!.next = head
             head!!.prev = tail
         }
     }
 
-    private fun mergeSort(headNode: Node?, comparator: Comparator?): Node? {
+    private fun mergeSort(headNode: Node?): Node? {
         if (headNode == null || headNode.next == null) {
             return headNode
         }
         val middle: Node? = getMidNode(headNode)
         val middleNext: Node? = middle!!.next
         middle.next = null
-        val left: Node? = mergeSort(headNode, comparator)
-        val right: Node? = mergeSort(middleNext, comparator)
-        return merge(left, right, comparator)
+        val left: Node? = mergeSort(headNode)
+        val right: Node? = mergeSort(middleNext)
+        return merge(left, right)
     }
 
-    private fun merge(_firstNode: Node?, _secondNode: Node?, comparator: Comparator?): Node? {
+    private fun merge(_firstNode: Node?, _secondNode: Node?): Node? {
         var firstNode: Node? = _firstNode
         var secondNode: Node? = _secondNode
         val merged: Node = Node(null)

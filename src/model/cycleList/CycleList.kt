@@ -8,13 +8,13 @@ class CycleList : Serializable {
     private var head: Node? = null
     private var length = 0
 
-    private var comparator: Comparator? = null
+    private var comparator: Comparator
 
-    constructor(comparator: Comparator){
+    constructor(comparator: Comparator) {
         this.comparator = comparator
     }
 
-     class Node(var data: Any?) : Serializable {
+    class Node(var data: Any?) : Serializable {
         var next: Node? = null
         var prev: Node? = null
         public override fun toString(): String {
@@ -22,7 +22,7 @@ class CycleList : Serializable {
         }
     }
 
-    fun add(data: Any) {
+    fun add(data: Any?) {
         if (head == null) {
             val node: Node = Node(data)
             node.prev = node
@@ -98,6 +98,53 @@ class CycleList : Serializable {
         }
     }
 
+    fun sortFuncStyle(): CycleList {
+        if (length <= 1) {
+            return this
+        }
+        var sortedList = CycleList(comparator)
+        var leftList = CycleList(comparator)
+        var rightList = CycleList(comparator)
+        val middle = length / 2;
+
+        forEachInRange({ x -> leftList.add(x) }, { x -> rightList.add(x) }, 0, middle, length)
+
+        leftList = leftList.sortFuncStyle()
+        rightList = rightList.sortFuncStyle()
+
+        var left = leftList.head
+        var right = rightList.head
+        var leftHead = 0
+        var rightHead = 0
+
+        while (leftHead < leftList.length && rightHead < rightList.length) {
+            if (comparator.compare(left!!.data, right!!.data) > 0) {
+                sortedList.add(right.data)
+                right = right.next
+                rightHead += 1
+            } else if (comparator.compare(left.data, right.data) <= 0) {
+                sortedList.add(left.data)
+                left = left.next
+                leftHead++
+            }
+        }
+
+        while (leftHead < leftList.length) {
+            sortedList.add(left!!.data)
+            left = left.next
+            leftHead++
+        }
+
+        while (rightHead < rightList.length) {
+            sortedList.add(right!!.data)
+            right = right.next
+            rightHead++
+        }
+
+
+        return sortedList
+    }
+
     fun sort() {
         if ((head != null) && (head!!.next !== head) && (head!!.prev !== head)) {
             var tail: Node? = head!!.prev
@@ -164,6 +211,19 @@ class CycleList : Serializable {
             currentNode = currentNode.next!!.next
         }
         return previousNode
+    }
+
+    fun forEachInRange(iteratorBefore: (Any) -> Unit, iteratorAfter: (Any) -> Unit, start: Int, middle: Int, end: Int) {
+        var tmp = head
+        for (i in start until middle) {
+            tmp!!.data?.let { iteratorBefore(it) }
+            tmp = tmp.next
+        }
+        for (i in middle until end) {
+            tmp!!.data?.let { iteratorAfter(it) }
+            tmp = tmp.next
+        }
+
     }
 
     fun forEachReverse(iterator: Iterator) {

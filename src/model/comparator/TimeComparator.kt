@@ -4,7 +4,7 @@ import model.usertype.type.TimeClass
 import java.io.Serializable
 
 class TimeComparator constructor() : Comparator, Serializable {
-    public override fun compare(o1: Any, o2: Any): Int {
+    public override fun compare(o1: Any?, o2: Any?): Int {
         val hourL: Int = (o1 as TimeClass).getHour()
         val hourR: Int = (o2 as TimeClass).getHour()
         val minuteL: Int = o1.getMinute()

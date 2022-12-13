@@ -49,6 +49,9 @@ class Testing constructor() {
         println("---LOAD FROM FILE----")
         cycleList.load(userType, INT_FILE_SAVE)
         cycleList.printList()
+        System.out.println("-----------SORTING BY FUNCTIONAL STYLE----------")
+        cycleList = cycleList.sortFuncStyle()
+        cycleList.printList()
         println("---------ITERATOR-----------")
         cycleList.forEach(object : Iterator {
             override fun toDo(obj: Any?) {
@@ -107,6 +110,9 @@ class Testing constructor() {
         cycleList.printList()
         println("---LOAD FROM FILE----")
         cycleList.load(userType, TIME_FILE_SAVE)
+        cycleList.printList()
+        System.out.println("-----------SORTING BY FUNCTIONAL STYLE----------")
+        cycleList = cycleList.sortFuncStyle()
         cycleList.printList()
         println("---------ITERATOR-----------")
         cycleList.forEach(object : Iterator {
